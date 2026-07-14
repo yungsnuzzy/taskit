@@ -2,6 +2,8 @@ services:
   taskit:
     build: .
     container_name: taskit
+    environment:
+      TZ: America/Phoenix
     ports:
       - "3000:3000"
     volumes:
