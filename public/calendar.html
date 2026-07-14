@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{APP_NAME}} - Calendar</title>
+    <link rel="icon" type="image/png" href="/icons/bright-icon.png" />
+    <link rel="apple-touch-icon" href="/icons/bright-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="{{APP_NAME}}" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside id="left-sidebar" class="sidebar hidden-left">
+        <nav class="panel nav-panel" aria-label="Main navigation">
+          <h2>options</h2>
+          <a href="/" class="nav-link">Today</a>
+          <a href="/rolling.html" class="nav-link">Rolling Tasks</a>
+          <a href="/calendar.html" class="nav-link active">Calendar</a>
+          <a href="/completed.html" class="nav-link">Completed Items</a>
+          <a href="/task-management.html" class="nav-link">Settings</a>
+
+          <div class="sidebar-tools" aria-label="Display controls">
+            <p class="tools-title">Display</p>
+            <div class="tool-row scale-controls">
+              <button id="text-smaller" type="button" class="tool-btn" aria-label="Smaller text">a</button>
+              <button id="text-reset" type="button" class="tool-btn" aria-label="Reset text size">↺</button>
+              <button id="text-bigger" type="button" class="tool-btn" aria-label="Bigger text">A</button>
+            </div>
+            <div class="tool-row">
+              <button id="theme-bright" type="button" class="tool-btn" aria-label="Bright theme">Bright</button>
+              <button id="theme-dark" type="button" class="tool-btn" aria-label="Dark theme">Dark</button>
+            </div>
+            <div class="tool-row single">
+              <button id="test-confetti" type="button" class="tool-btn" aria-label="Test confetti">Test Confetti</button>
+            </div>
+            <div class="tool-row single">
+              <button id="toggle-debug" type="button" class="tool-btn" aria-label="Toggle debug panel">Debug: Off</button>
+            </div>
+          </div>
+        </nav>
+      </aside>
+
+      <div class="layout">
+        <main class="main-content">
+          <header class="top-bar">
+            <div class="brand-block">
+              <button id="sidebar-toggle" type="button" class="sidebar-arrow" aria-label="Open menu">☰</button>
+              <div class="brand-copy">
+                <h1>
+                  <a href="/" class="home-title-link" aria-label="{{APP_NAME}} home">
+                    <img src="/icons/bright-wordmark.png" alt="{{APP_NAME}}" class="home-wordmark home-wordmark-bright" />
+                    <img src="/icons/dark-wordmark.png" alt="{{APP_NAME}}" class="home-wordmark home-wordmark-dark" />
+                  </a>
+                </h1>
+                <p class="subtitle">{{APP_TAGLINE}}</p>
+              </div>
+            </div>
+            <div class="clock-panel">
+              <p id="weekday" class="weekday">Monday</p>
+              <p id="date" class="date">January 1, 2026</p>
+              <p id="time" class="time">12:00:00 PM</p>
+            </div>
+          </header>
+
+          <section class="panel">
+            <div class="calendar-header">
+              <button id="prev-month" type="button" aria-label="Previous month">&lt;</button>
+              <h2 id="calendar-title">Calendar</h2>
+              <button id="next-month" type="button" aria-label="Next month">&gt;</button>
+            </div>
+            <div class="calendar-weekdays" id="calendar-weekdays"></div>
+            <div class="calendar-grid" id="calendar-grid"></div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <button id="open-task-modal" class="fab" type="button" aria-label="Add task">+</button>
+
+    <div id="task-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="task-modal-title">
+      <div class="modal-backdrop" id="task-modal-backdrop"></div>
+      <section class="modal-card">
+        <div class="modal-head">
+          <h2 id="task-modal-title">Add Task</h2>
+          <button id="close-task-modal" type="button" class="modal-close" aria-label="Close add task form">×</button>
+        </div>
+
+        <form id="task-form">
+          <label>
+            Task title
+            <input id="task-title" type="text" maxlength="120" required />
+          </label>
+
+          <label>
+            Assignee (optional)
+            <select id="task-assignee">
+              <option value="">Unassigned</option>
+            </select>
+          </label>
+
+          <label>
+            Frequency
+            <select id="frequency" required>
+              <option value="oneTime">One time</option>
+              <option value="daily">Every day</option>
+              <option value="everyOtherDay">Every other day</option>
+              <option value="weekly">Weekly</option>
+              <option value="monthly">Once a month</option>
+              <option value="yearly">Once a year</option>
+            </select>
+          </label>
+          <p id="frequency-hint" class="field-hint">Runs every day.</p>
+
+          <div id="weekly-days-group" class="conditional hidden">
+            <p class="legend">Choose days of week</p>
+            <p class="field-hint">Pick one or more weekdays for this weekly task.</p>
+            <div class="weekday-grid" id="weekday-grid"></div>
+          </div>
+
+          <div id="monthly-group" class="conditional hidden">
+            <label>
+              Day of month (optional)
+              <input id="day-of-month" type="number" min="1" max="31" />
+            </label>
+            <p class="field-hint">Optional. Monthly tasks stay visible through the month until completed.</p>
+          </div>
+
+          <div id="yearly-group" class="conditional hidden yearly-row">
+            <label>
+              Month
+              <select id="year-month"></select>
+            </label>
+            <label>
+              Day
+              <input id="year-day" type="number" min="1" max="31" />
+            </label>
+          </div>
+          <p id="yearly-hint" class="field-hint hidden">Used only for once-a-year tasks. The task appears when that month/day arrives.</p>
+
+          <button type="submit">Add task</button>
+        </form>
+        <p id="form-error" class="form-error"></p>
+      </section>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
