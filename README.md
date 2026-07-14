@@ -8,6 +8,9 @@ Dead simple chores and task tracker with:
 - Month calendar view of due tasks
 - Local file storage (no login, no cloud)
 
+<img width="1125" height="2066" alt="68A8AD5B-572E-4A31-A186-6E1A82AD3958" src="https://github.com/user-attachments/assets/9490ea46-d7f4-4d1c-89f9-56fd9c5a26c3" />
+
+
 ## Run
 
 1. Install Node.js 16+
