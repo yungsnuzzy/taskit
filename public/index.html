@@ -4,12 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{APP_NAME}} - Simple Chore Tracker</title>
-    <link rel="icon" type="image/png" href="/icons/bright-icon-noborder.png" />
-    <link rel="apple-touch-icon" href="/icons/bright-icon-noborder.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="apple-touch-icon-precomposed" href="/apple-touch-icon-precomposed.png" />
+    <meta name="theme-color" content="#f2f1e9" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="{{APP_NAME}}" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v={{APP_ASSET_VERSION}}" />
   </head>
   <body>
     <div class="app-shell">
@@ -149,6 +154,6 @@
       </section>
     </div>
 
-    <script src="app.js"></script>
+    <script src="app.js?v={{APP_ASSET_VERSION}}"></script>
   </body>
 </html>

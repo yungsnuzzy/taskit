@@ -10,6 +10,7 @@ const PACKAGE_FILE = path.join(__dirname, "package.json");
 let DATA_VERSION = Date.now();
 const CHANGE_STREAM_CLIENTS = new Set();
 let APP_VERSION = "0.0.0";
+let APP_ASSET_VERSION = Date.now().toString();
 let APP_NAME = "Taskit";
 let APP_TAGLINE = "Simple chores and tasks tracker";
 
@@ -18,6 +19,7 @@ const MIME_TYPES = {
   ".css": "text/css; charset=utf-8",
   ".js": "application/javascript; charset=utf-8",
   ".json": "application/json; charset=utf-8",
+  ".webmanifest": "application/manifest+json; charset=utf-8",
   ".svg": "image/svg+xml",
   ".png": "image/png",
   ".jpg": "image/jpeg",
@@ -29,6 +31,7 @@ function loadAppVersion() {
   try {
     const pkg = JSON.parse(fs.readFileSync(PACKAGE_FILE, "utf-8"));
     APP_VERSION = typeof pkg.version === "string" ? pkg.version : "0.0.0";
+    APP_ASSET_VERSION = `${APP_VERSION}-${Date.now()}`;
 
     const branding = pkg && pkg.taskitBrand && typeof pkg.taskitBrand === "object"
       ? pkg.taskitBrand
@@ -42,6 +45,7 @@ function loadAppVersion() {
       : "Simple chores and tasks tracker";
   } catch (err) {
     APP_VERSION = "0.0.0";
+    APP_ASSET_VERSION = `0.0.0-${Date.now()}`;
     APP_NAME = "Taskit";
     APP_TAGLINE = "Simple chores and tasks tracker";
   }
@@ -184,7 +188,9 @@ function escapeHtml(text) {
 function renderHtmlTemplate(input) {
   return String(input)
     .replace(/\{\{APP_NAME\}\}/g, escapeHtml(APP_NAME))
-    .replace(/\{\{APP_TAGLINE\}\}/g, escapeHtml(APP_TAGLINE));
+    .replace(/\{\{APP_TAGLINE\}\}/g, escapeHtml(APP_TAGLINE))
+    .replace(/\{\{APP_VERSION\}\}/g, escapeHtml(APP_VERSION))
+    .replace(/\{\{APP_ASSET_VERSION\}\}/g, escapeHtml(APP_ASSET_VERSION));
 }
 
 function serveStatic(req, res) {
