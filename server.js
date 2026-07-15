@@ -512,9 +512,15 @@ function handleApi(req, res) {
         const taskId = parts[3];
         const db = readTasks();
         const task = db.tasks.find((item) => item.id === taskId);
+        const assignee = normalizeAssigneeName(body.assignee);
 
         if (!task) {
           sendJson(res, 404, { error: "Task not found" });
+          return;
+        }
+
+        if (assignee && findAssigneeIndex(db.assignees, assignee) === -1) {
+          sendJson(res, 400, { error: "Choose an assignee from Settings" });
           return;
         }
 
