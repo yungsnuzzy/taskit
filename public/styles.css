@@ -237,6 +237,10 @@ body.sidebar-open {
   height: auto;
 }
 
+body.legacy-device .home-wordmark {
+  max-width: 112px;
+}
+
 body.legacy-device .brand-copy {
   width: clamp(92px, 16vw, 128px);
 }
@@ -1385,5 +1389,9 @@ body.legacy-device .calendar-weekdays {
 
   body.legacy-device .brand-copy {
     width: clamp(84px, 28vw, 112px);
+  }
+
+  body.legacy-device .home-wordmark {
+    max-width: 98px;
   }
 }
