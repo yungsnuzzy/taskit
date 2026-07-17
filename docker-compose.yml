@@ -1,6 +1,6 @@
 services:
   taskit:
-    image: taskit/taskit:latest
+    image: ${TASKIT_IMAGE:-taskit/taskit:latest}
     build: .
     container_name: taskit
     environment:

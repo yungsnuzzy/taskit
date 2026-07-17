@@ -9,6 +9,8 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
+    env:
+      TASKIT_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/taskit:latest
 
     steps:
       - name: Checkout
@@ -31,10 +33,10 @@ jobs:
       - name: Tag image
         run: |
           if docker image inspect taskit-taskit > /dev/null 2>&1; then
-            docker tag taskit-taskit taskit/taskit:latest
+            docker tag taskit-taskit "$TASKIT_IMAGE"
           else
-            echo "taskit-taskit not found; compose already built taskit/taskit:latest"
+            echo "taskit-taskit not found; compose already built $TASKIT_IMAGE"
           fi
 
       - name: Push image
-        run: docker push taskit/taskit:latest
+        run: docker push "$TASKIT_IMAGE"
