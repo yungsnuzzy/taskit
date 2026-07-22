@@ -399,6 +399,28 @@ button:hover {
   min-height: 1.2em;
 }
 
+.task-toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+  z-index: 9999;
+}
+
+.task-toast.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .fab {
   position: fixed;
   right: 30px;

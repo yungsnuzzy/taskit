@@ -136,6 +136,7 @@
     assigneeCount: document.getElementById("assignee-count"),
     assigneeList: document.getElementById("assignee-list"),
     assigneeFormError: document.getElementById("assignee-form-error"),
+    taskAddedToast: document.getElementById("task-added-toast"),
     debugPanel: null
   };
 
@@ -1330,6 +1331,19 @@
 
     clearUndoToastCountdown();
     elements.undoToast.classList.remove("visible");
+  }
+
+  function showTaskAddedToast() {
+    if (!elements.taskAddedToast) {
+      return;
+    }
+
+    elements.taskAddedToast.classList.remove("hidden");
+    window.setTimeout(function () {
+      if (elements.taskAddedToast) {
+        elements.taskAddedToast.classList.add("hidden");
+      }
+    }, 3000);
   }
 
   function collectCompletionKeys(task, dateIso, today) {
@@ -3171,6 +3185,9 @@
       .then(function () {
         clearForm();
         closeTaskModal();
+        if (!state.editingTaskId) {
+          showTaskAddedToast();
+        }
         return fetchTasks();
       })
       .catch(function (err) {
