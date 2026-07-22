@@ -253,7 +253,7 @@ function validateTaskInput(input) {
   }
 
   const schedule = input.schedule;
-  const validTypes = ["oneTime", "daily", "everyOtherDay", "weekly", "multiWeekly", "monthly", "yearly"];
+  const validTypes = ["oneTime", "daily", "everyOtherDay", "weekly", "multiWeekly", "everyTwoWeeks", "monthly", "yearly"];
 
   if (!validTypes.includes(schedule.type)) {
     return "Invalid schedule type";

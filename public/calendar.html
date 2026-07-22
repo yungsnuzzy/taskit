@@ -113,6 +113,7 @@
               <option value="daily">Every day</option>
               <option value="everyOtherDay">Every other day</option>
               <option value="weekly">Weekly</option>
+              <option value="everyTwoWeeks">Every two weeks</option>
               <option value="monthly">Once a month</option>
               <option value="yearly">Once a year</option>
             </select>
@@ -131,6 +132,14 @@
               <input id="day-of-month" type="number" min="1" max="31" />
             </label>
             <p class="field-hint">Optional. Monthly tasks stay visible through the month until completed.</p>
+          </div>
+
+          <div id="everyTwoWeeks-group" class="conditional hidden">
+            <label>
+              First occurrence date
+              <input id="everyTwoWeeks-date" type="date" required />
+            </label>
+            <p class="field-hint">The date this task first occurs. It will repeat every 14 days from this date.</p>
           </div>
 
           <div id="yearly-group" class="conditional hidden yearly-row">

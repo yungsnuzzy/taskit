@@ -94,6 +94,8 @@
     weeklyDaysGroup: document.getElementById("weekly-days-group"),
     weekdayGrid: document.getElementById("weekday-grid"),
     monthlyGroup: document.getElementById("monthly-group"),
+    everyTwoWeeksGroup: document.getElementById("everyTwoWeeks-group"),
+    everyTwoWeeksDate: document.getElementById("everyTwoWeeks-date"),
     yearlyGroup: document.getElementById("yearly-group"),
     dayOfMonth: document.getElementById("day-of-month"),
     yearMonth: document.getElementById("year-month"),
@@ -458,6 +460,11 @@
       return diff % 2 === 0;
     }
 
+    if (schedule.type === "everyTwoWeeks") {
+      var diff = diffInDays(start, check);
+      return diff % 14 === 0;
+    }
+
     if (schedule.type === "oneTime") {
       var today = startOfDay(state.currentDate);
       return isSameDate(check, today) && !hasAnyCompletion(task);
@@ -773,14 +780,17 @@
 
     var value = elements.frequency.value;
     var isWeekly = value === "weekly";
+    var isEveryTwoWeeks = value === "everyTwoWeeks";
     var isMonthly = value === "monthly";
     var isYearly = value === "yearly";
 
     elements.weeklyDaysGroup.classList.toggle("hidden", !isWeekly);
+    elements.everyTwoWeeksGroup.classList.toggle("hidden", !isEveryTwoWeeks);
     elements.monthlyGroup.classList.toggle("hidden", !isMonthly);
     elements.yearlyGroup.classList.toggle("hidden", !isYearly);
 
     setGroupInputsEnabled(elements.weeklyDaysGroup, isWeekly);
+    setGroupInputsEnabled(elements.everyTwoWeeksGroup, isEveryTwoWeeks);
     setGroupInputsEnabled(elements.monthlyGroup, isMonthly);
     setGroupInputsEnabled(elements.yearlyGroup, isYearly);
 
@@ -817,6 +827,8 @@
       hint = "Runs every 2 days from the start date.";
     } else if (value === "weekly") {
       hint = "Choose one or more weekdays.";
+    } else if (value === "everyTwoWeeks") {
+      hint = "Runs every 14 days from the start date.";
     } else if (value === "monthly") {
       hint = "Shows through the month until completed. Day is optional.";
     } else if (value === "yearly") {
@@ -1072,6 +1084,14 @@
       return { type: "everyOtherDay" };
     }
 
+    if (value === "everyTwoWeeks") {
+      var dateValue = elements.everyTwoWeeksDate.value.trim();
+      if (!dateValue) {
+        throw new Error("Please select the first occurrence date for every two weeks tasks.");
+      }
+      return { type: "everyTwoWeeks" };
+    }
+
     if (value === "weekly") {
       var weeklyDays = selectedWeekdays();
       if (weeklyDays.length < 1) {
@@ -1149,6 +1169,13 @@
       elements.frequency.value = "weekly";
       showFrequencyOptions();
       setWeekdayChecks(schedule.daysOfWeek || []);
+      return;
+    }
+
+    if (schedule.type === "everyTwoWeeks") {
+      elements.frequency.value = "everyTwoWeeks";
+      showFrequencyOptions();
+      elements.everyTwoWeeksDate.value = task.startDate || "";
       return;
     }
 
@@ -1941,6 +1968,10 @@
       return "Every other day";
     }
 
+    if (schedule.type === "everyTwoWeeks") {
+      return "Every two weeks";
+    }
+
     if (schedule.type === "weekly" || schedule.type === "multiWeekly") {
       var labels = (schedule.daysOfWeek || []).map(function (dayNumber) {
         return WEEKDAY_NAMES[dayNumber].slice(0, 3);
@@ -1974,6 +2005,7 @@
       everyOtherDay: 2,
       weekly: 3,
       multiWeekly: 3,
+      everyTwoWeeks: 3.5,
       monthly: 4,
       yearly: 5,
       custom: 6
@@ -1996,6 +2028,9 @@
       }
       if (type === "everyOtherDay") {
         return "Every Other Day";
+      }
+      if (type === "everyTwoWeeks") {
+        return "Every Two Weeks";
       }
       if (type === "weekly") {
         return "Weekly";
@@ -3115,11 +3150,19 @@
       return;
     }
 
+    var startDateValue = isoDate(startOfDay(state.currentDate));
+    if (elements.frequency && elements.frequency.value === "everyTwoWeeks" && elements.everyTwoWeeksDate) {
+      var selectedDate = elements.everyTwoWeeksDate.value.trim();
+      if (selectedDate) {
+        startDateValue = selectedDate;
+      }
+    }
+
     var taskInput = {
       title: title,
       assignee: elements.taskAssignee ? elements.taskAssignee.value : "",
       schedule: schedule,
-      startDate: isoDate(startOfDay(state.currentDate))
+      startDate: startDateValue
     };
 
     var savePromise = state.editingTaskId ? updateTask(state.editingTaskId, taskInput) : addTask(taskInput);

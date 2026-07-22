@@ -1,6 +1,6 @@
 {
   "name": "taskit",
-  "version": "2026.3",
+  "version": "2026.4",
   "private": true,
   "description": "Dead simple chores and tasks tracker",
   "main": "server.js",
